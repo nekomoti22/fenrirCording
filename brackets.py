@@ -17,29 +17,57 @@ str:
 """
     #処理部分
     decomp = list(s) #受け取った文を1文字ずつに分ける
-    check = {}
+    #各括弧が開かれているか
+    parenFlag = False
+    squaFlag = False
+    curlyFlag = False
+    #Matchは新しいからifで対応
     for i in decomp:
-        if i not in check:
-            check[i] = 1
-        else:
-            check[i] += 1
-
-    if ('(') in check or (')') in check:
-        if check['('] != check[')']:
-            return 0
-    if ('[') in check or (']') in check:
-        if check['['] != check[']']:
-            return 0
-    if ('{') in check or ('}') in check:
-        if check['{'] != check['}']:
-            return 0
-    #どれも正しかった場合
-    return 1
-
+        #括弧はじめ
+        if i == '(':
+            if parenFlag:
+                return 0
+            else:
+                parenFlag = True
+        elif i == '[':
+            if squaFlag:
+                return 0
+            else:
+                squaFlag = True
+        elif i == '(':
+            if curlyFlag:
+                return 0
+            else:
+                curlyFlag = True
+        #括弧閉じる
+        elif i == ')':
+            if parenFlag:
+                parenFlag = False
+            else:
+                return 0
+        elif i == ']':
+            if squaFlag:
+                squaFlag = False
+            else:
+                return 0
+        elif i == '}':
+            if curlyFlag:
+                curlyFlag = False
+            else:
+                return 0
+    #最後にすべての括弧が開いたままでなければTrue
+    if parenFlag == False and squaFlag == False and curlyFlag == False:
+        return 1
+    else:
+        return 0
+        
 
 # デバッグ
 s = "()"
 print(isValid(s)) #True
 
 s = "({)}"
-print(isValid(s)) #True
+print(isValid(s)) #False
+
+s = "("
+print(isValid(s)) # False
