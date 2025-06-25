@@ -22,11 +22,10 @@ str:
     match = {")":"(", "]":"[", "}":"{"}
     for i in decomp:
         if i == "(" or i == "[" or i == "{":
-            if i in bra:
-                return False
-            else:
                 bra.append(i)
         else:
+            if len(bra) == 0:
+                 return False
             if match[i] == bra[-1]:
                 bra.pop(-1)
             else:
@@ -47,4 +46,7 @@ s = "({)}"
 print(isValid(s)) #False
 
 s = "("
+print(isValid(s)) # False
+
+s = ")"
 print(isValid(s)) # False
